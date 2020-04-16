@@ -2,24 +2,26 @@
  * 多项选择联动生成表格
  * @param obj	
  * 参数为对象，属性有：
- * id ----- string  渲染table主题ID
- * tablekind ----- string   建表模式(分为"linkagetable"页面联动生成表单 和 "loadtable"载入已有数据生成表单)  
- * 		linkagetable:(对应的参数)
- *      gz  -----  object  联动生成建表的head选择包含内容
+ * id ----- string  渲染table主题ID (必填)
+ * tablekind ----- string   建表模式(分为"linkagetable"页面联动生成表单 和 "loadtable"载入已有数据生成表单)  (必填)
+ * 		linkagetable:(对应的参数)  (必填)
+ *      	gz  -----  object  联动生成建表的head选择包含内容 
  * 		
- * 		loadtable:(对应参数)
- * 		header  ------ arr[object]    载入生成建表的head； headerdata{title,key,edit,width}render,slot自定义内容;后期做
- * 		data  ------  arr[object]   载入生成建表的body；
+ * 		loadtable:(对应参数) (必填)
+ * 		header  ------ arr[object]    载入生成建表的head； headerdata{title,key,edit,width}render,slot自定义内容;后期做  (必填)
+ * 		data  ------  arr[object]   载入生成建表的body； (必填)
  * 
  * 	customtablehead:{},//自定义表头 暂时不做
 	customtablefoot:{},//自定义结尾 暂时不做
- * 方法有：
- * 	abbreviationimg:true,  //缩略图
-	hideprohibit:true, //隐藏禁填行
-	batchfill:true,//批量填写
-	savepost:true,//生成表单json数据
-	hidemark:true,//隐藏编码
-	integral:true//积分促销
+	
+	
+ * 功能参数：(一下默认false)
+ * 	abbreviationimg:bol,  //缩略图  
+	hideprohibit:bol, //隐藏禁填行
+	batchfill:bol,//批量填写
+	savepost:bol,//生成表单json数据
+	hidemark:bol,//隐藏编码
+	integral:bol//积分促销
  * comeback
 var normtable = new Morenormtable({
  	id:"normtable",
@@ -41,18 +43,20 @@ var normtable = new Morenormtable({
 function Morenormtable(obj){
 	var obj = obj;
 	var tablediv = $("#" + obj.id);
-		
+	
+	//隐藏表格自定义组件	
 	var slotarr = 	$("#" + obj.id + " div[data-slot]");
 	slotarr.hide()
-	var normtablecontont = $("<div></div>");
-	normtablecontont.addClass("normtablecontont")
-	tablediv.append(normtablecontont)
+	
+	var normTableContont = $("<div></div>");
+	normTableContont.addClass("norm-table-contont")
+	tablediv.append(normTableContont)
 	
 	
 	//渲染功能
-	function functionsrendering(){
+	function functionsRendering(){
 		var functionsdiv = $("<div></div>");
-		functionsdiv.addClass("functionsdiv");
+		functionsdiv.addClass("functions-div");
 		
 		// if(obj.functions.abbreviationimg){
 		// 	var abbreviationimg = $("<button></button>");
@@ -67,33 +71,33 @@ function Morenormtable(obj){
 		}
 		if(obj.functions.hideprohibit){
 			var hideprohibit = $("<button></button>");
-			hideprohibit.addClass("hideprohibit");
+			hideprohibit.addClass("hide-pro-hibit");
 			hideprohibit.html("隐藏禁填行")
-			addEventHandler(hideprohibit[0], 'click', clickhideprohibit);
+			addEventHandler(hideprohibit[0], 'click', clickHideProHibit);
 			
 			functionsdiv.append(hideprohibit)
 		}
 		if(obj.functions.batchfill){
 			var batchfill = $("<button></button>");
-			batchfill.addClass("batchfill");
+			batchfill.addClass("batch-fill");
 			batchfill.html("批量填写")
-			addEventHandler(batchfill[0], 'click', clickbatchfill);
+			addEventHandler(batchfill[0], 'click', clickBatchFill);
 			
 			functionsdiv.append(batchfill)
 		}
 		if(obj.functions.savepost){
 			var savepost = $("<button></button>");
-			savepost.addClass("savepost");
+			savepost.addClass("save-post");
 			savepost.html("生成表单json数据")
-			addEventHandler(savepost[0], 'click', clicksavepost);
+			addEventHandler(savepost[0], 'click', clickSavePost);
 			
 			functionsdiv.append(savepost)
 		}
 		if(obj.functions.hidemark){
 			var hidemark = $("<button></button>");
-			hidemark.addClass("hidemark");
+			hidemark.addClass("hide-mark");
 			hidemark.html("隐藏编码")
-			addEventHandler(hidemark[0], 'click', clickhidemark);
+			addEventHandler(hidemark[0], 'click', clickHideMark);
 			
 			functionsdiv.append(hidemark)
 		}
@@ -101,25 +105,25 @@ function Morenormtable(obj){
 			var integral = $("<button></button>");
 			integral.addClass("integral");
 			integral.html("开启积分促销")
-			addEventHandler(integral[0], 'click', clickintegral);
+			addEventHandler(integral[0], 'click', clickIntegral);
 			
 			functionsdiv.append(integral)
 		}
-		normtablecontont.append(functionsdiv)
+		normTableContont.append(functionsdiv)
 	}
-		
-	function tablerenderings(){
+	//渲染表	
+	function tableRenderings(){
 		var table = $("<table></table>");
 		table.prop("cellspacing",0)
 		table.prop("cellpadding",0)
 		table.prop("border",0)
-		normtablecontont.append(table)
+		normTableContont.append(table)
 	}	
 		
 	//渲染表头
-	function theadrendering(tableitem){
+	function theadRendering(tableitem){
 		var thead = $("<thead></thead>");
-		$("#" + obj.id + " .normtablecontont table").append(thead);
+		$("#" + obj.id + " .norm-table-contont table").append(thead);
 		var tr = $("<tr></tr>");
 		thead.append(tr);
 		if(obj.tablekind == "linkagetable"){
@@ -144,11 +148,11 @@ function Morenormtable(obj){
 			var j = 0;
 			while(j<obj.gz.length) {
 				if(tableitem[obj.gz[j].th] && tableitem[obj.gz[j].th].sec.length>0){
-					items = itemsfun(items,tableitem[obj.gz[j].th].sec,obj.gz[j].th)
+					items = itemsFun(items,tableitem[obj.gz[j].th].sec,obj.gz[j].th)
 				}			
 				j ++;
 				if(j>obj.gz.length - 1){
-					tbodyrendering(items)
+					tbodyRendering(items)
 					return
 				}
 			}
@@ -171,21 +175,21 @@ function Morenormtable(obj){
 			if(obj.functions && obj.functions.hideprohibit){
 				tr.prepend("<th>隐藏</th>");
 			}
-			tbodyrendering(obj.data)
+			tbodyRendering(obj.data)
 		}							
 	}
 	
 	//渲染tbody
-	function tbodyrendering(items){
+	function tbodyRendering(items){
 		var tbody = $("<tbody></tbody>");
-		$("#" + obj.id + " .normtablecontont table").append(tbody);		
+		$("#" + obj.id + " .norm-table-contont table").append(tbody);		
 		for(var i = 0;i<items.length;i++){
 			var tr = $("<tr></tr>");			
 			if(obj.functions && obj.functions.hideprohibit){
 				var hidetd = $("<td></td>")
 				var span = $("<span></span>")
 				span.html("×")
-				addEventHandler(span[0],"click",hidesingletd)
+				addEventHandler(span[0],"click",hideSingleTd)
 				hidetd.append(span)
 				tr.prepend(hidetd);
 			}
@@ -234,7 +238,7 @@ function Morenormtable(obj){
 	}
 		
 	//生成td表格数组
-	function itemsfun(item,arr,thtxt){
+	function itemsFun(item,arr,thtxt){
 		var item = item;
 		var arr = arr;
 			
@@ -255,11 +259,11 @@ function Morenormtable(obj){
 	}
 	
 	//功能点击事件	
-	function clickabbreviationimg(){
+	function clickAbbrEviatioNimg(){
 		console.log("缩略图")
 	}
 	
-	function hidesingletd(){
+	function hideSingleTd(){
 		console.log(1)	
 		if($(this).html() == "×"){
 			$(this).html("✔");
@@ -272,7 +276,7 @@ function Morenormtable(obj){
 		}	
 	}
 	
-	function clickhideprohibit(){
+	function clickHideProHibit(){
 		console.log("隐藏禁填行")
 		if($(this).html() == "隐藏禁填行"){
 			$(this).html("显示禁填行")
@@ -283,7 +287,7 @@ function Morenormtable(obj){
 		}	
 	}
 	
-	function clickbatchfill(){
+	function clickBatchFill(){
 		var hadwrithsth = $("#" + obj.id + " table thead").find("[data-th]")
 		var edata = [];
 		for(var i = 0 ;i<hadwrithsth.length;i++){	
@@ -304,7 +308,7 @@ function Morenormtable(obj){
 		})
 	}
 	
-	function clicksavepost(){
+	function clickSavePost(){
 		var trs = $("#" + obj.id + " table tbody tr");
 		var postdata = []
 		for(var i = 0;i<trs.length;i++){
@@ -330,7 +334,7 @@ function Morenormtable(obj){
 		console.log(JSON.stringify(postjsonobject))
 	}
 	
-	function clickhidemark(){
+	function clickHideMark(){
 		if($(this).html() == "显示编码"){
 			$(this).html("隐藏编码")
 			$("#" + obj.id + " table thead th[data-th='txm']").show();
@@ -346,7 +350,7 @@ function Morenormtable(obj){
 		}	
 	}
 	
-	function clickintegral(){
+	function clickIntegral(){
 		if($(this).html() == "开启积分促销"){
 			$(this).html("关闭积分促销")
 			$("#" + obj.id + " table thead th[data-th='txm']");
@@ -397,14 +401,14 @@ function Morenormtable(obj){
 		}			
 	}
 	
-	this.tablerendering = function(tableitem){
-		$("#" + obj.id + " .normtablecontont table").html("")
-		theadrendering(tableitem)				
+	this.tableRendering = function(tableitem){
+		$("#" + obj.id + " .norm-table-contont table").html("")
+		theadRendering(tableitem)				
 	}
 	
 	this.init = function(){
-		functionsrendering();
-		tablerenderings()
+		functionsRendering();
+		tableRenderings()
 	}
 	
 	this.comeback = function(){
@@ -412,62 +416,62 @@ function Morenormtable(obj){
 	}
 }
 
-var loadtable = new Morenormtable({
-	id:"loadtable",
-	tablekind:"loadtable",
-	header:[{
-		title: '序号',
-		slot: 'xh',
-		width: 60,
-		key:"xh"
-	},{
-		title: '用户账号',
-		key: 'userName',
-		edit:true
-	},{
-		title: '姓名',
-		render:function(h, params){
-			var tst = ""
-			tst = params
-			return h('div', {
-				color:"red",
-				background:"#000",
-			}, tst)
-		},
-		// render: (h, params) => {
-		// 	var tst = ""		
-		// 	tst = params
-		// 	return h('div', {
-		// 		color:"red",
-		// 		background:"#000",
-		// 	}, tst)
-		// },
-		key:"name"
-	},{
-		title: '身份证号',
-		key:""
-	},{
-		title: '联系电话',
-		key:"phone"
-	}],
-	data:[{
-		xh:1,
-		userName:"wuyuhai",
-		name:"吴玉海",
-		idcad:"522425199104097219",
-		phone:"8960311"
-	}],
-	functions:{
-		abbreviationimg:true,  //缩略图
-		hideprohibit:true, //隐藏禁填行
-		batchfill:true,//批量填写
-		savepost:true,//生成表单json数据
-		hidemark:true,//隐藏编码
-		integral:true//积分促销
-	},
-})
-loadtable.init()
-loadtable.tablerendering()
+// var loadtable = new Morenormtable({
+// 	id:"loadtable",
+// 	tablekind:"loadtable",
+// 	header:[{
+// 		title: '序号',
+// 		slot: 'xh',
+// 		width: 60,
+// 		key:"xh"
+// 	},{
+// 		title: '用户账号',
+// 		key: 'userName',
+// 		edit:true
+// 	},{
+// 		title: '姓名',
+// 		render:function(h, params){
+// 			var tst = ""
+// 			tst = params
+// 			return h('div', {
+// 				color:"red",
+// 				background:"#000",
+// 			}, tst)
+// 		},
+// 		// render: (h, params) => {
+// 		// 	var tst = ""		
+// 		// 	tst = params
+// 		// 	return h('div', {
+// 		// 		color:"red",
+// 		// 		background:"#000",
+// 		// 	}, tst)
+// 		// },
+// 		key:"name"
+// 	},{
+// 		title: '身份证号',
+// 		key:"idcad"
+// 	},{
+// 		title: '联系电话',
+// 		key:"phone"
+// 	}],
+// 	data:[{
+// 		xh:1,
+// 		userName:"wuyuhai",
+// 		name:"吴玉海",
+// 		idcad:"522425199104097219",
+// 		phone:"8960311"
+// 	}],
+// 	functions:{
+// 		abbreviationimg:true,  //缩略图
+// 		hideprohibit:true, //隐藏禁填行
+// 		batchfill:true,//批量填写
+// 		savepost:true,//生成表单json数据
+// 		hidemark:true,//隐藏编码
+// 		integral:true//积分促销
+// 	},
+// })
+// loadtable.init()
+// loadtable.tableRendering()
 
 function customLabel(plabel,nlabel,cont){
 	//nlabel = 样式
@@ -476,7 +480,6 @@ function customLabel(plabel,nlabel,cont){
 	pl.html(cont)
 	return pl
 }
-
 function Htmlrendering(obj){
 	var obj = obj;
 	var objthis = this
@@ -704,7 +707,7 @@ function Htmlrendering(obj){
 				}
 			})			
 		}
-		objthis.normtable.tablerendering(hadselect)
+		objthis.normtable.tableRendering(hadselect)
 	}
 	
 	function seleccolorkind(){	
@@ -831,11 +834,11 @@ var mors = {
 		cc:1000,
 	}]
 }
-var htmls = new Htmlrendering({
-	id:"htmls",
-	mors:mors,
-})
-htmls.init()
-htmls.comeback = function(){
+// var htmls = new Htmlrendering({
+// 	id:"htmls",
+// 	mors:mors,
+// })
+// htmls.init()
+// htmls.comeback = function(){
 		
-}
+// }

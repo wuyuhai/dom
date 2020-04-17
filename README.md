@@ -125,3 +125,37 @@ var npage = new Page({
  })
  * ---------------------------- usage:----------------------------
  */
+ 
+ /**
+ * 穿梭框
+ * @param obj	
+ * 参数为对象，属性有：
+	* - [必须] leftId：实例框的id。
+	* - [必须] rightId：实例框的id。
+	* - [必须] leftData：初始左边数据。
+	* - [非必须] rightData：初始右边数据。
+	* - [非必须]checkedIcon:"src/hadseck.png",//当点击样式为'checkbox',可传样式，勾选中的图标 默认为“src/hadseck”  可以不传
+	* -	[非必须]disCheckedIcon:"src/noseck.png",//当点击样式为'checkbox',可传样式，没勾选中的图标 默认为“src/noseck”
+	* var shuttleBox = new Jb_shuuule({
+		leftId:"shuttleBoxLeft",
+		rightId:"shuttleBoxRight",
+		leftData:leftdata,
+		// liClass:"cumclass",
+		checkedIcon:"src/hadseck.png",//当点击样式为'checkbox',可传样式，勾选中的图标 默认为“src/hadseck”  可以不传
+		disCheckedIcon:"src/noseck.png",//当点击样式为'checkbox',可传样式，没勾选中的图标 默认为“src/noseck”
+	})
+	$("#transrams").click(function(){					
+		shuttleBox.transramsFun()
+	})
+	$("#saveDatas").click(function(){
+		shuttleBox.thisSavedata()			
+	})
+	shuttleBox.saveData = function(a,b){
+		console.log(a).
+		console.log(b)
+	}
+	shuttleBox.unOrAnCheckCameBack = function(item,arr){
+		console.log(item);
+		console.log(arr);
+	}
+**/
